@@ -1,0 +1,143 @@
+<head>
+    <title id='Description'>In this example the ComboBox is bound to a Remote Data.</title>
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqxdata.js"></script> 
+    <script type="text/javascript" src="js/jqxbuttons.js"></script>
+    <script type="text/javascript" src="js/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="js/jqxlistbox.js"></script>
+    <script type="text/javascript" src="js/jqxdropdownlist.js"></script>
+    <div id='content'>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var updating = false;
+                var url = "http://www.terraeterra.com.br/sistema/listarEmpreendimento.php";
+
+                // prepare the data
+                var source =
+                {
+                    datatype: "json",
+                    datafields: [
+                        {name: 'id'},
+                        {name: 'nome'},
+                    ],
+                    url: url,
+                    async: true
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+
+                // Create a jqxDropDownList
+                $("#empreendimento").jqxDropDownList({
+                    selectedIndex: 0, source: dataAdapter, displayMember: "nome", valueMember: "id", width: 200, height: 25
+                });
+
+                $("#empreendimento").jqxDropDownList('loadFromSelect', 'select');
+
+                // subscribe to the select event.
+                $("#empreendimento").on('select', function (event) {
+                debugger;                  
+                    if (event.args && !updating) {
+                        var args = event.args;
+                        // select the item in the 'select' tag.
+                        var index = args.item.index;
+                        $("#quadra").val(args.item.value);
+                    }
+                });
+            });
+
+        </script>
+</head> 
+<div id="servico_geral" style="margin-top:100px;"><img onclick="voltar();" src="img/back.png">
+      <div id="slimForm" class="form-signin">
+        <!--<label for="empreendimento">Empreendimento</label>
+        <input id="empreendimento" class="form-control" placeholder="" required="" autofocus="">-->
+        <div id='empreendimento' style="font-size: 13px; font-family: Verdana; float: left;">
+        <div id="jqxdropdownlist"></div>
+        <div id="selectionlog"></div>
+    </div> 
+        <div id='quadra' style="font-size: 13px; font-family: Verdana; float: left;">
+        <div id="jqxdropdownlist"></div>
+        <div id="selectionlog"></div>
+         </div>
+        <!--<label for="quadra">Quadra</label>
+        <input id="quadra" class="form-control" placeholder="" required="" autofocus="">-->
+        <label for="lote">Lote</label>
+        <input id="lote" class="form-control" placeholder="" required="" autofocus="">
+        <label for="nome_comprador">Nome</label>
+        <input id="nome_comprador" class="form-control" placeholder="" required="" autofocus="">
+        <label for="rg">RG</label>
+        <input id="rg" class="form-control" placeholder="" required="">
+        <label for="cpf">CPF</label>
+        <input id="cpf" class="form-control" placeholder="" required="">
+        <label for="email">Email</label>
+        <input id="email" class="form-control" placeholder="" required="">
+        <label for="telefone">Telefone</label>
+        <input id="telefone" class="form-control" placeholder="" required="">
+        <label for="celular">Celular</label>
+        <input id="celular" class="form-control" placeholder="" required="">
+        <script src="js/moment.js"/>        
+        <script>
+            init();
+        function init() {
+            if (localStorage.agendamento != 'null') {  
+                $('#empreendimento').val(localStorage.empreendimento.id);
+                $('#quadra').val(localStorage.quadra);
+                $('#lote').val(localStorage.lote); 
+                $('#nome_comprador').val(localStorage.nome_comprador);
+                $('#rg').val(localStorage.rg);
+                $('#cpf').val(localStorage.cpf);
+                $('#email').val(localStorage.email);
+                $('#telefone').val(localStorage.telefone);
+                $('#celular').val(localStorage.celular);
+            } 
+        }       
+       </script>
+        <button id="agendamento_button" class="btn btn-lg btn-primary btn-block" style="margin-top: 80px;" onclick="agendar();
+                $('#agendamento_button').attr('disabled', 'disabled');">Reservar</button>
+</div></div>
+<script>
+            $('#home').removeClass('no_overflow');
+</script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var url = "http://www.terraeterra.com.br/sistema/listarQuadras.php";
+
+                // prepare the data
+                var source =
+                {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'numero' },
+                    ],
+                    url: url,
+                    async: true
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+
+                // Create a jqxDropDownList
+                $("#quadra").jqxDropDownList({
+                    selectedIndex: 2, source: dataAdapter, displayMember: "numero", valueMember: "numero", width: 200, height: 25
+                });
+
+                // subscribe to the select event.
+                $("#quadra").on('select', function (event) {
+                    if (event.args) {
+                        var item = event.args.item;
+                        if (item) {
+                            var valueelement = $("<div></div>");
+                            valueelement.text("Value: " + item.value);
+                            var labelelement = $("<div></div>");
+                            labelelement.text("Label: " + item.label);
+
+                           // $("#selectionlog").children().remove();
+                           // $("#selectionlog").append(labelelement);
+                          //  $("#selectionlog").append(valueelement);
+                        }
+                    }
+                });
+            });
+        </script>
+</head>       
+    
+
